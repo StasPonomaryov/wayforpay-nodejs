@@ -4,7 +4,7 @@ const WayForPay = require('./adapters/WayForPay.js')
 const merchantAccount = process.env.WAYFORPAY_DOMAIN;
 const merchantSecret = process.env.WAYFORPAY_SECRET;
 const wayForPayApi = process.env.WAYFORPAY_URL;
-
+// Example products
 const items = [
   {
     name: 'Apple',
@@ -17,12 +17,13 @@ const items = [
     count: 2
   }
 ];
-
+// Config for adapter
 const payment = WayForPay({
   account: merchantAccount,
   secret: merchantSecret,
   apiUrl: wayForPayApi,
 });
+// Example order
 const order = {
   id: Date.now(),
   items: items.map((i) => (
@@ -32,6 +33,7 @@ const order = {
   currency: 'UAH',
   domain: 't.me'
 };
+// Get invoice URL for using in front-end
 payment.prepareInvoice(order)
   .then((data) => {
     if (!data || data.reasonCode > 1100) {
