@@ -61,7 +61,7 @@ module.exports = ({
     };
   },
   prepareTransactionsRequest(timestamp, hours) {
-    const signature = this.createSignature(secret, this.createStringForSignature([
+    const signature = this.createSignature(this.createStringForSignature([
       account,
       timestamp - hours * 60 * 60,
       timestamp
@@ -77,15 +77,17 @@ module.exports = ({
     };
   },
   transactionReceived(order, status) {
-    const signature = this.createSignature(secret, this.createStringForSignature([
+    const time = Date.now();
+    const string = this.createStringForSignature([
       order,
       status,
-      Date.now()
-    ]));
+      time
+    ]);
+    const signature = this.createSignature(string);
     const requestData = {
       orderReference: order,
       status,
-      time: Date.now(),
+      time: time,
       signature
     };
 
