@@ -76,6 +76,21 @@ module.exports = ({
       dateEnd: timestamp
     };
   },
+  transactionReceived(order, status) {
+    const signature = this.createSignature(secret, this.createStringForSignature([
+      order,
+      status,
+      Date.now()
+    ]));
+    const requestData = {
+      orderReference: order,
+      status,
+      time: Date.now(),
+      signature
+    };
+
+    return requestData;
+  },
   async prepareInvoice(order) {
     const orderData = this.prepareFields(order);
     const requestData = this.prepareOrderRequest(orderData);
